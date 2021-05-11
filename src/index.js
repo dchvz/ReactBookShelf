@@ -9,5 +9,3 @@ ReactDOM.render(
         <App />
     </BrowserRouter> ,document.getElementById('root')
 )
-
-// register service worker, debo usarlo?

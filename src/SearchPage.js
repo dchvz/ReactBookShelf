@@ -7,45 +7,26 @@ import './App.css'
 class SearchBooks extends React.Component {
     state = {
         foundBooks: [],
-        books: [],
-        loaded:false
     }
+    
+    // searches a book for a given query
     searchBooks = async (query) => {
-        this.setState( () => ({
-            loaded: false
-        }))
         // since that is the length of the shortest search term
         if(query.length>=3){
             let bookResults = await BooksAPI.search(query)
             if(bookResults.length > 0){
                 this.setState( () => ({
-                    foundBooks: bookResults.filter(x=> x.authors!== undefined  && x.imageLinks !== undefined),
-                    loaded: true
+                    foundBooks: bookResults.filter(x=> x.authors!== undefined  && x.imageLinks !== undefined)
                 }))
                 this.setShelfs()
             }
         }
     }
-    
-     // update book shelf
-    shelfUpdate = async (bookId, shelf) => {
-        let {foundBooks} = this.state
-        // index of changed Element
-        const index = foundBooks.findIndex(x => x.id === bookId)
-        let book = foundBooks[index]
-        // update the book
-        await BooksAPI.update(book, shelf)
-        // create a mock bookShelf
-        let booksCopy = JSON.parse(JSON.stringify(foundBooks));
-        booksCopy[index].shelf = shelf
-        // change the books state, update the shelf of the modified book only
-        this.setState(() => ({
-            foundBooks: booksCopy,
-        }))
-    }
-    // method that adds the shelf field to any book that has a shelf
+
+    // method that adds the shelf field to books from the search results
     setShelfs = () => {
-        let {books, foundBooks} = this.state
+        let { foundBooks} = this.state
+        let { books } = this.props
         let updatedBookShelf = JSON.parse(JSON.stringify(foundBooks))
         for(let book of books){
             let index = foundBooks.findIndex(x => x.id === book.id)
@@ -58,21 +39,9 @@ class SearchBooks extends React.Component {
         }))
     }
 
-    // method that loads the get all books API so that I can get the books who have assigned shelfs
-    getBooksOnShelf = async () => {
-        let booksFromAPI = await BooksAPI.getAll()
-        this.setState(() => ({
-            books: booksFromAPI,
-            loaded: true
-        }))
-    }
-
-    async componentDidMount() {
-        await this.getBooksOnShelf()
-    }
-
     render() {
-        let {foundBooks, loaded} = this.state
+        let { foundBooks } = this.state
+        let { shelfUpdate } = this.props
         return <div className="search-books">
             <div className="search-books-bar">
                 <Link className="close-search" to="/">
@@ -82,11 +51,10 @@ class SearchBooks extends React.Component {
                     <input type="text" placeholder="Search by title or author" onChange={event => this.searchBooks(event.target.value)} />
                 </div>
             </div>
-
             <div className="search-books-results">
                 {
-                    loaded
-                    ? <ShelfRow books = { foundBooks } shelfName={"Search Results"} onShelfUpdate = {this.shelfUpdate} />
+                    foundBooks.length > 0
+                    ? <ShelfRow books = { foundBooks } shelfName={"Search Results"} shelfUpdate = {shelfUpdate} />
                     : null
                 }
             </div>
