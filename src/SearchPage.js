@@ -8,8 +8,8 @@ class SearchBooks extends React.Component {
     state = {
         foundBooks: [],
     }
-    
-    // searches a book for a given query
+
+    // searches books for a given query
     searchBooks = async (query) => {
         // since that is the length of the shortest search term
         if(query.length>=3){
