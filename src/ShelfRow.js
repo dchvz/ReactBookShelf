@@ -9,8 +9,8 @@ function ShelfRow(props) {
             <div className="bookshelf-books">
                 <ol className="books-grid">
                     {
-                        props.books.map((item, index) => 
-                            <li className="books-grid" key={index}>
+                        props.books.map((item) => 
+                            <li className="books-grid" key={item.id}>
                                 <div className="book">
                                     <div className="book-top">
                                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${ item.imageLinks.thumbnail })` }}></div>
