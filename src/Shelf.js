@@ -12,9 +12,9 @@ function Shelf(props) {
                 <h1>MyReads</h1>
             </div>
             <div className="list-books-content">
-                <ShelfRow books = { props.books.filter( x => x.shelf === "currentlyReading" ) } shelfName={"Currently Reading"} shelfUpdate = {props.shelfUpdate} />
-                <ShelfRow books = { props.books.filter( x => x.shelf === "wantToRead" ) } shelfName={"Want to Read"} shelfUpdate = {props.shelfUpdate} />
-                <ShelfRow books = { props.books.filter( x => x.shelf === "read" ) } shelfName={"Read"} shelfUpdate = {props.shelfUpdate} />
+                <ShelfRow books = { props.books.filter( x => x.shelf === "currentlyReading" ) } shelfName={"Currently Reading"} handleShelfUpdate = {props.handleShelfUpdate} />
+                <ShelfRow books = { props.books.filter( x => x.shelf === "wantToRead" ) } shelfName={"Want to Read"} handleShelfUpdate = {props.handleShelfUpdate} />
+                <ShelfRow books = { props.books.filter( x => x.shelf === "read" ) } shelfName={"Read"} handleShelfUpdate = {props.handleShelfUpdate} />
             </div>
             <Link className="open-search" to="/search">
                 <button className="open-search" type="button" />

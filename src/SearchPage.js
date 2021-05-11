@@ -41,7 +41,7 @@ class SearchBooks extends React.Component {
 
     render() {
         let { foundBooks } = this.state
-        let { shelfUpdate } = this.props
+        let { handleShelfUpdate } = this.props
         return <div className="search-books">
             <div className="search-books-bar">
                 <Link className="close-search" to="/">
@@ -54,7 +54,7 @@ class SearchBooks extends React.Component {
             <div className="search-books-results">
                 {
                     foundBooks.length > 0
-                    ? <ShelfRow books = { foundBooks } shelfName={"Search Results"} shelfUpdate = {shelfUpdate} />
+                    ? <ShelfRow books = { foundBooks } shelfName={"Search Results"} handleShelfUpdate = {handleShelfUpdate} />
                     : null
                 }
             </div>

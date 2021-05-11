@@ -14,7 +14,7 @@ function ShelfRow(props) {
                                 <div className="book">
                                     <div className="book-top">
                                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${ item.imageLinks.thumbnail })` }}></div>
-                                        <ShelfChanger shelfName={item.shelf} bookId={item.id} shelfUpdate={props.shelfUpdate} />
+                                        <ShelfChanger shelfName={item.shelf} bookId={item.id} handleShelfUpdate={props.handleShelfUpdate} />
                                     </div>
                                     <div className="book-title">{ item.title }</div>
                                     <div className="book-authors">{ item.authors.toString() }</div>
