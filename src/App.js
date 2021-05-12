@@ -1,72 +1,96 @@
-import React from 'react'
-import './App.css'
-import { Route } from 'react-router-dom'
-import SearchPage from './SearchPage.js'
-import Shelf from './Shelf.js'
-import * as BooksAPI from './BooksAPI'
+import React from "react";
+import "./App.css";
+import { Route } from "react-router-dom";
+import SearchPage from "./SearchPage.js";
+import Shelf from "./Shelf.js";
+import * as BooksAPI from "./BooksAPI";
 
 class BooksApp extends React.Component {
   state = {
-    books: []
-  }
+    books: [],
+  };
 
-  // update book on shelf
+  /**
+   * Updates the selected book's shelf
+   * @param {string} bookId - The id of the book whose shelf is going to be updated
+   * @param {string} shelf - The value of the new book for the selected shelf
+   * @returns {void}}
+   */
   shelfUpdate = async (bookId, shelf) => {
-    let {books} = this.state
-    // index of changed Element
-    const index = books.findIndex(x => x.id === bookId)
-    let newBook = {}
-    if(index === -1 ){
-      // if the book is not on the shelf, just add it
-      newBook = await this.getBook(bookId)
-      newBook.shelf = shelf
+    let { books } = this.state;
+    /**
+     * index of changed Element
+     */
+    const index = books.findIndex((x) => x.id === bookId);
+    let newBook = {};
+    if (index === -1) {
+      newBook = await this.getBook(bookId);
+      newBook.shelf = shelf;
       this.setState(() => ({
-        books: [...books, newBook]
-      }))
+        books: [...books, newBook],
+      }));
     } else {
-      newBook = books[index]
-      // getBooks
+      newBook = books[index];
       let booksCopy = JSON.parse(JSON.stringify(books));
-      booksCopy[index].shelf = shelf
-      // change the books state, update the shelf of the modified book only
+      booksCopy[index].shelf = shelf;
       this.setState(() => ({
-          books: booksCopy
-      }))
+        books: booksCopy,
+      }));
     }
     // update the book
-    await BooksAPI.update(newBook, shelf)
-  }
+    await BooksAPI.update(newBook, shelf);
+  };
 
-  // get book's data by id
-  getBook = async id =>{
-    return await BooksAPI.get(id)
-  }
+  /**
+   * Gets a book by id
+   * @param {string} id - The id of the book to get
+   * @returns {object} - Returns the book found by the BooksAPI
+   */
+  getBook = async (id) => {
+    return await BooksAPI.get(id);
+  };
 
-  // get books form API
+  /**
+   * Adds books who have shelfs assigned to them to this component's state
+   */
   getBooks = async () => {
-    let booksFromAPI = await BooksAPI.getAll()
-      this.setState(() => ({
-          books: booksFromAPI
-      }))
-  }
+    let booksFromAPI = await BooksAPI.getAll();
+    this.setState(() => ({
+      books: booksFromAPI,
+    }));
+  };
 
+  /**
+   * Component that renders the Shelf  or the SearchPage Component based on the route
+   */
   render() {
-    let { books } = this.state 
+    let { books } = this.state;
     return (
       <div className="app">
-        <Route exact path="/" render = { () => (
-          <Shelf books={books} handleShelfUpdate ={this.shelfUpdate} />
-        )} />
-        <Route exact path="/search" render = { () => (
-          <SearchPage books={books} handleShelfUpdate ={this.shelfUpdate} />
-        )} />
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Shelf books={books} handleShelfUpdate={this.shelfUpdate} />
+          )}
+        />
+        <Route
+          exact
+          path="/search"
+          render={() => (
+            <SearchPage books={books} handleShelfUpdate={this.shelfUpdate} />
+          )}
+        />
       </div>
-    )
+    );
   }
 
-  componentDidMount(){
-    this.getBooks()
+  /**
+   * Gets all books who have assigned shelfs
+   */
+  componentDidMount() {
+    this.getBooks();
   }
 }
 
-export default BooksApp
+export default BooksApp;
