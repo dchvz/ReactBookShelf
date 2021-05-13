@@ -1,17 +1,15 @@
 # MyReads Project
 
-This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
+This application renders a list of books by shelfs so that the user can categorize the books he/she finds interesting on the categories: **"Currently Reading", "Want to Read", "Read"**
 
-Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://github.com/facebookincubator/create-react-app) to bootstrap the project.
-
-## TL;DR
+## Getting Started
 
 To get started developing right away:
 
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
-## What You're Getting
+## File Structure
 ```bash
 ├── CONTRIBUTING.md
 ├── README.md - This file.
@@ -22,9 +20,13 @@ To get started developing right away:
 │   └── index.html # DO NOT MODIFY
 └── src
     ├── App.css # Styles for your app. Feel free to customize this as you desire.
-    ├── App.js # This is the root of your app. Contains static HTML right now.
+    ├── App.js # This is the root of the app, renders the main Components(Shelf and SearchPage) based on the route
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
     ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
+    ├── Shelf.js # A React component that renders books from the Udacity backend in the corresponding shelf
+    ├── SearchPage.js # A React component that includes a search bar to look for new books that can be added to the shelf or change books who are already in shelfs to another shelf
+    ├── ShelfRow.js # A React component that renders the books from a specific shelf
+    ├── ShelfChanger.js # A React component that changes the book's current shelf to what is selected in it
     ├── icons # Helpful images for your app. Use at your discretion.
     │   ├── add.svg
     │   ├── arrow-back.svg
@@ -32,12 +34,11 @@ To get started developing right away:
     ├── index.css # Global styles. You probably won't need to change anything here.
     └── index.js # You should not need to modify this file. It is used for DOM rendering only.
 ```
+##
 
-Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
+## Udacity's Backend Server
 
-## Backend Server
-
-To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
+The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
 
 * [`getAll`](#getall)
 * [`update`](#update)
@@ -76,7 +77,90 @@ search(query)
 
 * query: `<String>`
 * Returns a Promise which resolves to a JSON object containing a collection of a maximum of 20 book objects.
-* These books do not know which shelf they are on. They are raw results only. You'll need to make sure that books have the correct state while on the search page.
+* These books do not know which shelf they are on. They are raw results only. You'll need to make sure that books have the correct state while on the search page. 
+
+## React Components
+
+### `App.js`
+
+It is the component that contains the data of books that have an assigned shelf. 
+
+It contains the following in its state
+*  books: `<Array>` books array with assigned shelfs
+
+It uses the following functions
+
+```js
+shelfUpdate(bookId, shelf)
+```
+* bookId `<String>`
+* shelf `<String>`
+* Updates the state containing the books with assigned shelfs
+
+
+```js
+getBooks()
+```
+* Gets books that have assigned shelfs from the Udacity's Backend Server
+
+
+### `Shelf.js`
+
+It is the component that displays books with assigned shelfs to them, to do so it receives props from its parent `App.js`
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  books: `<Array>` books with assigned shelfs
+
+### `ShelfRow.js`
+
+It is the component that displays the book on a specific shelf, to do so it receives the following props
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  books: `<Array>` Books of an specific category
+*  shelfName: `<String>` The name of the current book shelf
+
+
+### `ShelfChanger.js`
+
+It is the component that changes the shelf of the selected book
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  bookId: `<String>` The id of the book that is gonna get its shelf changed
+*  shelfName: `<String>` The current shelf that the book is actually on
+
+
+### `SearchPage.js`
+
+It is the component that looks for books that match a specific query and then is able to change its shelf
+
+It contains the following in its state
+*  foundBooks: `<Array>` books array of found books by a given query
+
+It uses the following functions
+
+```js
+searchBooks(query)
+```
+* query `<String>`
+* Updates the `foundBooks` field of the state whenever the query length is > 0, otherwise it updates it to be an empty array, it also verifies that the result had no errors. It only adds the results when they have the `authors` and `imageLinks` properties.
+
+```js
+resetFoundBooks()
+```
+* It resets the `foundBooks` field of the state to be an empty array
+
+```js
+setShelfs()
+```
+* It assigns a shelf to the found books if they already have one assigned
+
+
+It receives the following as props:
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  books: `<Array>` books with assigned shelfs
+
+Note that the `search()` endpoint receives an error object when the search term is not valid, so no results are shown when such data is retrived.
 
 ## Important
 The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
@@ -86,7 +170,5 @@ The backend API uses a fixed set of cached search results and is limited to a pa
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). You can find more information on how to perform common tasks [here](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md).
 
 ## Contributing
-
-This repository is the starter code for _all_ Udacity students. Therefore, we most likely will not accept pull requests.
 
 For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
