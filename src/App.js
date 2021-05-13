@@ -14,13 +14,10 @@ class BooksApp extends React.Component {
    * Updates the selected book's shelf
    * @param {string} bookId - The id of the book whose shelf is going to be updated
    * @param {string} shelf - The value of the new book for the selected shelf
-   * @returns {void}}
+   * @returns {void}
    */
   shelfUpdate = async (bookId, shelf) => {
-    let { books } = this.state;
-    /**
-     * index of changed Element
-     */
+    const { books } = this.state;
     const index = books.findIndex((x) => x.id === bookId);
     let newBook = {};
     if (index === -1) {
@@ -52,6 +49,7 @@ class BooksApp extends React.Component {
 
   /**
    * Adds books who have shelfs assigned to them to this component's state
+   * @returns {void}
    */
   getBooks = async () => {
     let booksFromAPI = await BooksAPI.getAll();
