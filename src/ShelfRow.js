@@ -41,17 +41,8 @@ function ShelfRow(props) {
 }
 
 ShelfRow.propTypes = {
-  /**
-   * The name of the shelf
-   */
   shelfName: PropTypes.string,
-  /**
-   * Function that updates the selected book's shelf
-   */
   handleShelfUpdate: PropTypes.func,
-  /**
-   * Array of objects that have an assigned shelf
-   */
   books: PropTypes.array,
 };
 

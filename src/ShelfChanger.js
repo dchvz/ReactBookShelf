@@ -24,17 +24,8 @@ function ShelfChanger(props) {
 }
 
 ShelfChanger.propTypes = {
-  /**
-   * The shelf that the current book is on
-   */
   shelfName: PropTypes.string,
-  /**
-   * The id of the book that can change its shelf
-   */
   bookId: PropTypes.string,
-  /**
-   * Function that updates the selected book's shelf
-   */
   handleShelfUpdate: PropTypes.func,
 };
 
