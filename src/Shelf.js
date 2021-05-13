@@ -5,6 +5,15 @@ import "./App.css";
 import PropTypes from "prop-types";
 
 /**
+ * array of shelfs that the books can be displayed on
+ */
+const shelves = [
+  { title: "Currently Reading", key: "currentlyReading" },
+  { title: "Want To Read", key: "wantToRead" },
+  { title: "Read", key: "read" },
+];
+
+/**
  * Component that displays books with assigned shelfs
  */
 function Shelf(props) {
@@ -15,21 +24,14 @@ function Shelf(props) {
         <h1>MyReads</h1>
       </div>
       <div className="list-books-content">
-        <ShelfRow
-          books={props.books.filter((x) => x.shelf === "currentlyReading")}
-          shelfName={"Currently Reading"}
-          handleShelfUpdate={props.handleShelfUpdate}
-        />
-        <ShelfRow
-          books={props.books.filter((x) => x.shelf === "wantToRead")}
-          shelfName={"Want to Read"}
-          handleShelfUpdate={props.handleShelfUpdate}
-        />
-        <ShelfRow
-          books={props.books.filter((x) => x.shelf === "read")}
-          shelfName={"Read"}
-          handleShelfUpdate={props.handleShelfUpdate}
-        />
+        {shelves.map((item) => (
+          <ShelfRow
+            key={item.key}
+            books={props.books.filter((x) => x.shelf === item.key)}
+            shelfName={item.title}
+            handleShelfUpdate={props.handleShelfUpdate}
+          />
+        ))}
       </div>
       <Link className="open-search" to="/search">
         <button className="open-search" type="button" />
@@ -39,13 +41,7 @@ function Shelf(props) {
 }
 
 Shelf.propTypes = {
-  /**
-   * Function that updates the selected book's shelf
-   */
   handleShelfUpdate: PropTypes.func,
-  /**
-   * Array of objects that have an assigned shelf
-   */
   books: PropTypes.array,
 };
 
