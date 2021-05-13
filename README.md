@@ -103,32 +103,6 @@ getBooks()
 ```
 * Gets books that have assigned shelfs from the Udacity's Backend Server
 
-
-### `Shelf.js`
-
-It is the component that displays books with assigned shelfs to them, to do so it receives props from its parent `App.js`
-
-*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
-*  books: `<Array>` books with assigned shelfs
-
-### `ShelfRow.js`
-
-It is the component that displays the book on a specific shelf, to do so it receives the following props
-
-*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
-*  books: `<Array>` Books of an specific category
-*  shelfName: `<String>` The name of the current book shelf
-
-
-### `ShelfChanger.js`
-
-It is the component that changes the shelf of the selected book
-
-*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
-*  bookId: `<String>` The id of the book that is gonna get its shelf changed
-*  shelfName: `<String>` The current shelf that the book is actually on
-
-
 ### `SearchPage.js`
 
 It is the component that looks for books that match a specific query and then is able to change its shelf
@@ -154,13 +128,36 @@ setShelfs()
 ```
 * It assigns a shelf to the found books if they already have one assigned
 
-
-It receives the following as props:
+This component receives the following as props:
 
 *  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
 *  books: `<Array>` books with assigned shelfs
 
 Note that the `search()` endpoint receives an error object when the search term is not valid, so no results are shown when such data is retrived.
+
+### `Shelf.js`
+
+It is an stateless component that displays books with assigned shelfs to them, to do so it receives props from its parent `App.js`
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  books: `<Array>` books with assigned shelfs
+
+### `ShelfRow.js`
+
+It is an stateless component that displays the book on a specific shelf, to do so it receives the following props
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  books: `<Array>` Books of an specific category
+*  shelfName: `<String>` The name of the current book shelf
+
+
+### `ShelfChanger.js`
+
+It is an stateless component that changes the shelf of the selected book
+
+*  handleShelfUpdate: `<Function>` function that updates the shelf of a selected book on the App.js state
+*  bookId: `<String>` The id of the book that is gonna get its shelf changed
+*  shelfName: `<String>` The current shelf that the book is actually on
 
 ## Important
 The backend API uses a fixed set of cached search results and is limited to a particular set of search terms, which can be found in [SEARCH_TERMS.md](SEARCH_TERMS.md). That list of terms are the _only_ terms that will work with the backend, so don't be surprised if your searches for Basket Weaving or Bubble Wrap don't come back with any results.
