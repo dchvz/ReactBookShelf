@@ -15,28 +15,41 @@ class SearchBooks extends React.Component {
    * @param {string} query - query used to look for books in the BooksAPI, as long as it's length is 3, since that is the length of the shortest search term
    */
   searchBooks = async (query) => {
-    if (query.length >= 3) {
-      let bookResults = await BooksAPI.search(query);
-      if (bookResults.length > 0) {
+    if (query.length > 0) {
+      const bookResults = await BooksAPI.search(query);
+      if (bookResults.error !== "empty query") {
         this.setState(() => ({
           foundBooks: bookResults.filter(
             (x) => x.authors !== undefined && x.imageLinks !== undefined
           ),
         }));
         this.setShelfs();
+      } else {
+        this.resetFoundBooks();
       }
+    } else {
+      this.resetFoundBooks();
     }
   };
 
   /**
+   * changes the foundBooks array of the state to be empty
+   * @return {void}
+   */
+  resetFoundBooks = () => {
+    this.setState(() => ({
+      foundBooks: [],
+    }));
+  };
+  /**
    * Method that adds the shelf field to books from the search results
    */
   setShelfs = () => {
-    let { foundBooks } = this.state;
-    let { books } = this.props;
+    const { foundBooks } = this.state;
+    const { books } = this.props;
     let updatedBookShelf = JSON.parse(JSON.stringify(foundBooks));
     for (let book of books) {
-      let index = foundBooks.findIndex((x) => x.id === book.id);
+      const index = foundBooks.findIndex((x) => x.id === book.id);
       if (index !== -1) {
         updatedBookShelf[index] = book;
       }
@@ -81,13 +94,7 @@ class SearchBooks extends React.Component {
 }
 
 SearchBooks.propTypes = {
-  /**
-   * Function that updates the selected book's shelf
-   */
   handleShelfUpdate: PropTypes.func,
-  /**
-   * Array of objects that have an assigned shelf
-   */
   books: PropTypes.array,
 };
 
